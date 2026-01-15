@@ -3,7 +3,8 @@ import time
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 
-TOKEN = "ВСТАВЬ_СЮДА_ТОКЕН"
+import os
+TOKEN = os.getenv("TOKEN")
 
 TARGET_USERNAME = "BUNKERKlNG"
 MUTE_TIME = 5 * 60        # 5 минут
