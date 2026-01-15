@@ -1,7 +1,6 @@
 import asyncio
 import time
 from aiogram import Bot, Dispatcher, types
-from aiogram.enums import ChatType
 from aiogram.types import ChatPermissions
 import os
 
