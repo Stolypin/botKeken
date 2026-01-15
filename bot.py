@@ -1,10 +1,15 @@
-import asyncio
+import os
 import time
+import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 
-import os
 TOKEN = os.getenv("TOKEN")
+if not TOKEN:
+    raise ValueError("TOKEN не найден! Проверь Shared Variable в Railway")
+
+bot = Bot(token=TOKEN)
+dp = Dispatcher(bot)
 
 TARGET_USERNAME = "BUNKERKlNG"
 MUTE_TIME = 5 * 60        # 5 минут
