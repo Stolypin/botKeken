@@ -29,10 +29,17 @@ async def butilka(message: types.Message):
         return
 
     chat_id = message.chat.id
+
+    # проверяем, админ ли цель
+    member = await bot.get_chat_member(chat_id, TARGET_ID)
+    if member.is_chat_admin():
+        await message.reply("Эй, @BUNKERKlNG слишком крут для бутылки, он админ 😎")
+        return
+
     until_date = int(time.time()) + MUTE_TIME
 
     try:
-        # мутим цель по ID
+        # мутим цель
         await bot.restrict_chat_member(
             chat_id=chat_id,
             user_id=TARGET_ID,
@@ -42,13 +49,18 @@ async def butilka(message: types.Message):
         cooldowns[user_id] = now
 
         # первое сообщение с таймером
-        timer_msg = await message.reply(f"@BUNKERKlNG отправлен на бутылку на 5 минут 🍼\nОсталось: 5:00 🕒")
+        timer_msg = await message.reply(f"@BUNKERKlNG отправлен в бутылку на 5 минут 🍼\nОсталось: 5:00 🕒")
 
-        # цикл таймера
-        for remaining in range(MUTE_TIME - 1, -1, -1):
+        # таймер обновляем каждые 5 секунд
+        interval = 5
+        remaining = MUTE_TIME
+        while remaining > 0:
             minutes, seconds = divmod(remaining, 60)
-            await timer_msg.edit_text(f"@BUNKERKlNG на бутылке 🍼\nОсталось: {minutes}:{seconds:02d} 🕒")
-            await asyncio.sleep(1)
+            await timer_msg.edit_text(f"@BUNKERKlNG в бутылке 🍼\nОсталось: {minutes}:{seconds:02d} 🕒")
+            await asyncio.sleep(interval)
+            remaining -= interval
+            if remaining < 0:
+                remaining = 0
 
         await timer_msg.edit_text(f"@BUNKERKlNG свободен, бутылка опустела 🎉")
 
